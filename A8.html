@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Medición de Pobreza 2008-2018</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f7f7f7; }
+        h2 { color: #333; }
+        canvas { max-width: 700px; margin-bottom: 40px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 40px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background-color: #eee; }
+    </style>
+</head>
+<body>
+<h2>Evolución de la pobreza y pobreza extrema</h2>
+<canvas id="pobrezaChart"></canvas>
+
+<h2>Carencias sociales (Comparativa Radar)</h2>
+<canvas id="carenciasRadarChart"></canvas>
+
+<h2>Carencias sociales específicas</h2>
+<canvas id="carenciasChart"></canvas>
+
+<h2>Ingreso inferior a la línea de pobreza</h2>
+<canvas id="ingresosChart"></canvas>
+
+<h2>Comparativo combinado de pobreza e ingresos</h2>
+<canvas id="combinadoChart"></canvas>
+
+<script>
+    // Gráfico 1: Evolución de pobreza (se conserva)
+    new Chart(document.getElementById("pobrezaChart"), {
+        type: 'bar',
+        data: {
+            labels: ["2008", "2018"],
+            datasets: [
+                { label: "Pobreza (%)", data: [44.4, 41.9], backgroundColor: "#4e79a7" },
+                { label: "Pobreza extrema (%)", data: [11.0, 7.4], backgroundColor: "#f28e2c" },
+                { label: "Pobreza (millones)", data: [49.5, 52.4], backgroundColor: "#76b7b2" },
+                { label: "Pobreza extrema (millones)", data: [12.3, 9.3], backgroundColor: "#e15759" }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: { title: { display: true, text: 'Evolución Pobreza y Pobreza Extrema' } }
+        }
+    });
+
+    // Gráfico 2: Radar de carencias sociales específicas (en lugar del gráfico de barras de promedio)
+    new Chart(document.getElementById("carenciasRadarChart"), {
+        type: 'radar',
+        data: {
+            labels: [
+                "Rezago educativo", "Servicios de salud", "Seguridad social",
+                "Calidad de vivienda", "Servicios básicos", "Alimentación"
+            ],
+            datasets: [
+                {
+                    label: "2008",
+                    data: [21.9, 38.4, 65.0, 17.7, 22.9, 21.7],
+                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    pointBackgroundColor: "rgba(54, 162, 235, 1)"
+                },
+                {
+                    label: "2018",
+                    data: [16.9, 16.2, 57.3, 11.1, 19.8, 20.4],
+                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    borderColor: "rgba(255, 99, 132, 1)",
+                    pointBackgroundColor: "rgba(255, 99, 132, 1)"
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Carencias Sociales Comparadas (Radar)'
+                }
+            },
+            scales: {
+                r: {
+                    suggestedMin: 0,
+                    suggestedMax: 70
+                }
+            }
+        }
+    });
+
+    // Gráfico 3: Carencias sociales específicas (línea)
+    new Chart(document.getElementById("carenciasChart"), {
+        type: 'line',
+        data: {
+            labels: [
+                "Rezago educativo", "Servicios de salud", "Seguridad social",
+                "Calidad de vivienda", "Servicios básicos", "Alimentación"
+            ],
+            datasets: [
+                { label: "2008 (%)", data: [21.9, 38.4, 65.0, 17.7, 22.9, 21.7], borderColor: "#af7aa1", fill: false },
+                { label: "2018 (%)", data: [16.9, 16.2, 57.3, 11.1, 19.8, 20.4], borderColor: "#ff9da7", fill: false }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: { title: { display: true, text: 'Carencias Sociales Específicas (Línea)' } }
+        }
+    });
+
+    // Gráfico 4: Ingreso bajo línea de pobreza
+    new Chart(document.getElementById("ingresosChart"), {
+        type: 'bar',
+        data: {
+            labels: [
+                "Pob. < pobreza extrema (%)", "Pob. < pobreza extrema (millones)",
+                "Pob. < pobreza (%)", "Pob. < pobreza (millones)"
+            ],
+            datasets: [
+                { label: "2008", data: [16.8, 18.7, 49.0, 54.7], backgroundColor: "#bab0ab" },
+                { label: "2018", data: [16.8, 21.0, 48.8, 61.1], backgroundColor: "#ffbe7d" }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: { title: { display: true, text: 'Población con Ingreso Inferior a Línea de Pobreza' } }
+        }
+    });
+
+    // Gráfico 5: Tabla combinada
+    new Chart(document.getElementById("combinadoChart"), {
+        type: 'line',
+        data: {
+            labels: ["2008", "2018"],
+            datasets: [
+                { label: "Pobreza (%)", data: [44.4, 41.9], borderColor: "#1f77b4", fill: false },
+                { label: "Pobreza extrema (%)", data: [11.0, 7.4], borderColor: "#ff7f0e", fill: false },
+                { label: "Ingreso < pobreza (%)", data: [49.0, 48.8], borderColor: "#2ca02c", fill: false },
+                { label: "Ingreso < pobreza extrema (%)", data: [16.8, 16.8], borderColor: "#d62728", fill: false }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: { title: { display: true, text: 'Combinación Pobreza e Ingresos (%)' } }
+        }
+    });
+</script>
+</body>
+</html>
